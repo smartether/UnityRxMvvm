@@ -1,0 +1,34 @@
+﻿<Properties StartupConfiguration="{27D79D8D-558D-B61A-7B9D-B46758AE7244}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Editor/FairyGUIImporter/CodeGenerator.cs">
+    <Files>
+      <File FileName="Assets/Scripts/UI/IViewModelExtension.cs" Line="10" Column="43" />
+      <File FileName="Assets/Scripts/UI/UIBase.cs" Line="694" Column="1" />
+      <File FileName="Assets/Scripts/UI/BindDefine/GGListSub.cs" Line="359" Column="17" />
+      <File FileName="Assets/Scripts/UI/BindDefine/IUnirxBind.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/UI/IViewModel.cs" Line="12" Column="35" />
+      <File FileName="Assets/Scripts/UI/UIDataRepo.cs" Line="11" Column="41" />
+      <File FileName="Assets/Scripts/UI/BindDefine/GLoaderSub.cs" Line="97" Column="22" />
+      <File FileName="Assets/Scripts/UI/UIManager.cs" Line="303" Column="19" />
+      <File FileName="Assets/Scripts/UI/EventSubscription.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/UI/BindDefine/GButtonSub.cs" Line="111" Column="34" />
+      <File FileName="Assets/Scripts/UI/BindDefine/GMoviceSub.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/UI/UISortSetting.cs" Line="12" Column="15" />
+      <File FileName="Assets/Scripts/FairyGUI/Scripts/Core/NTexture.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Globals.cs" Line="148" Column="1" />
+      <File FileName="Assets/Scripts/FairyGUI/Scripts/UI/PackageItem.cs" Line="1" Column="1" />
+      <File FileName="Assets/Editor/FairyGUIImporter/CodeGenerator.cs" Line="584" Column="1" />
+      <File FileName="Assets/Scripts/FairyGUI/Scripts/UI/FieldTypes.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/FairyGUI/Scripts/UI/UIPackage.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/FairyGUI/Scripts/Core/DisplayObject.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/FairyGUI/Scripts/Core/DisplayOptions.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/FairyGUI/Scripts/UI/UIObjectFactory.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.UniRx PreferredExecutionTarget="Unity.Editor" />
+  <MultiItemStartupConfigurations />
+</Properties>
