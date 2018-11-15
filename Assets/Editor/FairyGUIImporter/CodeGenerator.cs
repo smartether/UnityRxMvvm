@@ -72,8 +72,9 @@ namespace CodeGenerate
         {
             //递归查找component下面元素
             var rootItem = exportComponentInfo.PakItem;
-            rootItem.Load();
-            var displayItems = rootItem.extensionCreator().GetChildren();// .displayList;
+            var loadedPi = rootItem.Load();
+            var piInst = UIPackage.CreateObject(pak.name, rootItem.name) as FairyGUI.GComponent;
+            var displayItems = piInst.GetChildren();// .displayList;
             for (int i = 0, c = displayItems.Length; i < c; i++)
             {
                 var displayItem = displayItems[i];
@@ -81,38 +82,38 @@ namespace CodeGenerate
 
 
                 //var xml = item.componentData;
-                var xml = displayItem.desc;
+                //var xml = displayItem.desc;
                 //字段名
-                var fieldName = xml.GetAttribute("name");
+                var fieldName = displayItem.name;// xml.GetAttribute("name");
                 //字段id
-                var id = xml.GetAttribute("id");
+                var id = displayItem.id;//xml.GetAttribute("id");
                 //是否应用了包内的组建
-                bool hasSrc = xml.HasAttribute("src");
+                //bool hasSrc =  xml.HasAttribute("src");
 
                 //是否是否引用了其他包
-                bool isRefPakComponent = xml.HasAttribute("pkg");
-                string refPakId = isRefPakComponent ? xml.GetAttribute("pkg") : "";
-                string refPakName = isRefPakComponent ? UIPackage.GetById(refPakId).name : "";
+                bool isRefPakComponent = false;// xml.HasAttribute("pkg");
+                string refPakId = ""; // xml.GetAttribute("pkg") : "";
+                string refPakName = "";
                 if (isRefPakComponent)
                 {
-                    LogA("1.1$$ xml.node.src: " + xml.GetAttribute("src"));
+                    //LogA("1.1$$ xml.node.src: " + xml.GetAttribute("src"));
                 }
-                LogA("2$$ desc xml.node.name: " + xml.name + "  fieldName:" + fieldName);
+                //LogA("2$$ desc xml.node.name: " + xml.name + "  fieldName:" + fieldName);
 
                 //ultra feature
-                string CustomData = xml.GetAttribute("customData");
+                string CustomData = string.Concat(displayItem.data);// xml.GetAttribute("customData");
                 //Debug.Log("$$ " + fieldName + " customData:" + CustomData);
                 // 否则displayListItem为内置控件
-                if (item == null)
+                if (item == null) // == null
                 {
                     //内置控件类型或者自定义控件元素名称 组件内的内置控件
-                    var builtInTypeName = xml.name;
+                    var builtInTypeName = displayItem.GetType().Name.ToLower().Remove(0,1);//xml.name;
                     if (builtInElementType.ContainsKey(builtInTypeName))
                     {
                         LogA("2.1$$ find exist builtInElementType: " + builtInTypeName);
                         var exportInfo = new ExportInfo();
                         exportInfo.ExportCategory = ExportInfo.EExportCategory.builtInElement;
-                        exportInfo.DisplayListItem = displayItem;
+                        exportInfo.DisplayListItem = item;
                         exportInfo.ExportName = fieldName;
                         exportInfo.ExportType = builtInElementType[builtInTypeName];
                         exportInfo.ExportTypeName = exportInfo.ExportType.FullName;
@@ -126,7 +127,7 @@ namespace CodeGenerate
                         Debug.LogError("2.1$$ find unexpected builtInElementType: " + builtInTypeName + " fieldName:" + fieldName);
                     }
 
-                    LogA("2.1$$ pakItem is null desc xml.node.name:" + xml.name + " fieldName:" + fieldName);
+                    //LogA("2.1$$ pakItem is null desc xml.node.name:" + xml.name + " fieldName:" + fieldName);
                 }
                 else //item不为null 引用的是包内资源或组件
                 {
@@ -141,6 +142,10 @@ namespace CodeGenerate
 
                     item.Load();
 
+                    isRefPakComponent = item.owner.id != rootItem.owner.id;
+                    refPakId = isRefPakComponent ? item.owner.id : ""; 
+                    refPakName = isRefPakComponent ? UIPackage.GetById(refPakId).name : "";
+
                     //资源和自定义动画
                     if (item.type == FairyGUI.PackageItemType.Image)
                     {
@@ -151,7 +156,7 @@ namespace CodeGenerate
                         elementType.ExportType = typeof(FairyGUI.GImage);
                         elementType.ExportTypeName = elementType.ExportType.FullName;
                         elementType.NodeIndex = i;
-                        elementType.DisplayListItem = displayItem;
+                        elementType.DisplayListItem = item;
                         elementType.ID = id;
                         elementType.CustomData = CustomData;
                         exportComponentInfo.ExportInfos.Add(elementType);
@@ -165,7 +170,7 @@ namespace CodeGenerate
                         elementType.ExportType = typeof(FairyGUI.GMovieClip);
                         elementType.ExportTypeName = elementType.ExportType.FullName;
                         elementType.NodeIndex = i;
-                        elementType.DisplayListItem = displayItem;
+                        elementType.DisplayListItem = item;
                         elementType.ID = id;
                         elementType.CustomData = CustomData;
                         exportComponentInfo.ExportInfos.Add(elementType);
@@ -190,7 +195,7 @@ namespace CodeGenerate
                     // custom elements 自定义控件元素
                     else if (item.type == FairyGUI.PackageItemType.Component)
                     {
-                        string extention = item.componentData.GetAttribute("extention");
+                        string extention = item.objectType.ToString();//.componentData.GetAttribute("extention");
                         if (extention != null)
                         {
                             var TypeName = item.name;
@@ -233,7 +238,7 @@ namespace CodeGenerate
                                 elementType.ExportTypeName = isRefPakComponent? FullName : string.Join(".", new string[] { CodeGeneratorSetting.RootNameSpace, pak.name, TypeName });
                                 elementType.ExtentionType = customComponentType[extention];
                                 elementType.NodeIndex = i;
-                                elementType.DisplayListItem = displayItem;
+                                elementType.DisplayListItem = item;
                                 elementType.ID = id;
                                 elementType.CustomData = CustomData;
                                 exportComponentInfo.ExportInfos.Add(elementType);
@@ -275,7 +280,7 @@ namespace CodeGenerate
                                 FullName = typeof(FairyGUI.GComponent).FullName;
                             }
                             componentTypeFiled.ExportTypeName = isRefPakComponent? FullName: TypeName;
-                            componentTypeFiled.DisplayListItem = displayItem;
+                            componentTypeFiled.DisplayListItem = item;
                             componentTypeFiled.isTypeInPak = !isRefPakComponent;
                             componentTypeFiled.ExtentionType = typeof(FairyGUI.GComponent);
                             componentTypeFiled.NodeIndex = i;
@@ -287,6 +292,7 @@ namespace CodeGenerate
 
                 }//end if(item != null)
             }
+            piInst.Dispose();
         }
 
         public struct ExportPipeInfo
@@ -319,12 +325,12 @@ namespace CodeGenerate
                 {
                     item.Load();
 
-                    var xml = item.componentData;
-                /** 自定控件继承的父类类型 */
-                    string extention = xml.GetAttribute("extention");
+                    //var xml = item.componentData;
+                    /** 自定控件继承的父类类型 */
+                    string extention = item.objectType.ToString();//xml.GetAttribute("extention");
 
                 // elements
-                if (extention != null)
+                if (extention != "Component")
                     {
                         var TypeName = item.name;
                         // 引用了包内自定义控件

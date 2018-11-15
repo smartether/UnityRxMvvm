@@ -48,7 +48,9 @@ public class CodeGenerateEditor : EditorWindow{
         }
 
         if(fairGUIItems==null){
-            fairGUIItems = target.GetItems();
+            target.LoadAllAssets();
+            fairGUIItems =  target.GetItems();
+            Debug.Log("$$ loaded assets count:" + fairGUIItems.Count);
             selectInfos = new bool[fairGUIItems.Count];
         }
 
@@ -117,12 +119,14 @@ public class CodeGenerateEditor : EditorWindow{
         //    AssetDatabase.LoadAssetAtPath<type>()
         //});
         #endregion
-
-        FairyGUIEditor.EditorToolSet.ReloadPackages();
-        var pak = FairyGUI.UIPackage.GetByName(packageName);
-
+        FairyGUI.UIPackage pak = FairyGUI.UIPackage.AddPackage("FairyGUIPak/Common");
+        //FairyGUIEditor.EditorToolSet.LoadPackages();
+        //FairyGUIEditor.EditorToolSet.ReloadPackages();
+        Debug.Log("$$ will load package:" + packageName);
+        //pak = FairyGUI.UIPackage.GetByName("FairyGUIPak" + "/" + packageName);
         if (pak != null)
         {
+            Debug.Log("$$ display code generate panel...");
             CodeGenerateEditor.Create(pak);
         }
     }
