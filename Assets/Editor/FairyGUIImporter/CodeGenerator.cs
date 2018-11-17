@@ -36,6 +36,7 @@ namespace CodeGenerate
 
         { "list", typeof(FairyGUI.GList) },
         { "text", typeof(FairyGUI.GTextField)},
+        { "textfield", typeof(FairyGUI.GTextField)},
         { "richtext", typeof(FairyGUI.GRichTextField) },
         { "graph",typeof(FairyGUI.GGraph) },
         { "inputtext", typeof(FairyGUI.GTextInput) },
@@ -196,9 +197,10 @@ namespace CodeGenerate
                     else if (item.type == FairyGUI.PackageItemType.Component)
                     {
                         string extention = item.objectType.ToString();//.componentData.GetAttribute("extention");
-                        if (extention != null)
+                        if (extention != "Component")
                         {
                             var TypeName = item.name;
+                            Debug.Log("$$ fetch type:" + TypeName);
                             // 引用了包内自定义控件
                             if (customComponentType.ContainsKey(extention))
                             {
@@ -250,6 +252,7 @@ namespace CodeGenerate
                         else
                         {
                             var TypeName = item.name;
+                            Debug.Log("$$ fetch type:" + TypeName);
                             // 添加新的导出信息
                             if (!exportInfoMap.ContainsKey(TypeName) && !isRefPakComponent)
                             {
